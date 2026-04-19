@@ -82,12 +82,13 @@ WSGI_APPLICATION = 'shop.wsgi.application'
 #     }
 # }
 
+# Retrieve the DATABASE_URL from environment, fallback to SQLite if it's completely empty or missing
+database_url = os.environ.get('DATABASE_URL', '').strip()
+if not database_url:
+    database_url = f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
+
 DATABASES = {
-    # This will use the DATABASE_URL from Render, but fallback to local sqlite3 during development
-    'default': dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-        conn_max_age=600
-    )
+    'default': dj_database_url.parse(database_url, conn_max_age=600)
 }
 
 
