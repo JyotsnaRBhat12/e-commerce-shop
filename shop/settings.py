@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'store',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -143,15 +144,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # To use AWS S3 for media storage, first install django-storages and boto3:
 # python -m pip install django-storages boto3
 # 
-# Uncomment and configure the following lines inside your .env file:
-# AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')   
-# AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-# AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-# 
-# If those variables are present, you can tell Django to use S3:
-# if AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
-#     AWS_S3_REGION_NAME = 'us-east-1' # Change to your region
-#     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-#     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-#     # MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')   
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_ENDPOINT_URL = os.environ.get('AWS_S3_ENDPOINT_URL') # Required for Supabase
+
+if AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
+    AWS_S3_REGION_NAME = 'us-east-1'
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    
+    if AWS_S3_ENDPOINT_URL:
+        AWS_S3_ENDPOINT_URL = AWS_S3_ENDPOINT_URL
+    else:
+        # If no endpoint is provided, default to standard Amazon S3 domain
+        AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    # MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 # ==========================================
