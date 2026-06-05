@@ -10,3 +10,4 @@ python-dotenv==1.2.1
 python-magic-bin==0.4.14
 boto3==1.42.91
 django-storages==1.14.6
+python-magic==0.4.27
