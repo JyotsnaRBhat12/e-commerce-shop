@@ -103,3 +103,7 @@ if AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
         AWS_S3_ENDPOINT_URL = AWS_S3_ENDPOINT_URL
     else:
         AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', 'https://e-commerce-shop-utfi.onrender.com').split(',')
